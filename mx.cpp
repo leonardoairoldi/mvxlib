@@ -8,13 +8,6 @@
 #include <exception>
 #include <cmath>
 
-mx::mx(double* data, int r, int c) noexcept
-{
-	this->data = data;
-	this->r = r;
-	this->c = c;
-}
-
 mx::mx() noexcept
 {
 	r = -1;

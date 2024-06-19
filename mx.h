@@ -8,6 +8,9 @@
 
 class vx;
 
+/// <summary>
+/// Standart type of mxvlib to indicate direction of selection or calculation
+/// </summary>
 typedef enum
 {
 	ROW,
@@ -21,23 +24,86 @@ private:
 protected:
 	double* data;
 	int r, c;
-	mx(double* data, int r, int c) noexcept;
 
 public:
 	mx() noexcept;
-	mx(int r, int c);
-	mx(const mx& m);
-	mx(int r, int c, std::initializer_list<double> list);
-	mx(std::initializer_list<std::initializer_list<double>> list);
-
-	~mx();
-	void set(int i, int j, double val);
-	double get(int i, int j) const;
-	void print();
-	std::stringstream to_string();
 
 	/// <summary>
-	/// Copy-assignment operator 
+	/// Creates a matrix object
+	/// </summary>
+	/// <param name="r">Number of rows</param>
+	/// <param name="c">Number of columns</param>
+	mx(int r, int c);
+
+	/// Copy constructor
+	/// <summary>
+	/// Creates a copy of the object mx
+	/// </summary>
+	/// <param name="m">Matrix to copy</param>
+	mx(const mx& m);
+
+	/// List inizializer
+	/// <summary>
+	/// Initializes the matrix with the values in the list, with the specified dimensions.
+	/// The values are stored in row-major order (row after row)
+	/// </summary>
+	/// <example>
+	/// Create a 2x2 matrix initializing [1, 2; 2, 4]
+	/// <code>
+	/// mx m(2, 2, {1, 2, 3, 4});
+	/// </code>
+	/// </example>
+	/// <param name="r">Number of rows</param>
+	/// <param name="c">Number of columns</param>
+	/// <param name="list">Initializer list</param>
+	mx(int r, int c, std::initializer_list<double> list);
+
+
+	/// List-List initializer
+	/// <summary>
+	/// Initialize the matrix with the corrispong values in the list.
+	/// The dimensions are inferred from the list.
+	/// 
+	/// </summary>
+	/// <param name="list">A list of row values</param>
+	mx(std::initializer_list<std::initializer_list<double>> list);
+
+	/// Destructor
+	/// <summary>
+	/// Deallocates the object
+	/// </summary>
+	~mx();
+	
+	/// <summary>
+	/// Set the element in the matrix at the specified position
+	/// </summary>
+	/// <param name="i">Row index</param>
+	/// <param name="j">Column index</param>
+	/// <param name="val">Value to set</param>
+	void set(int i, int j, double val);
+
+	/// <summary>
+	/// Get the element in the matrix at the specified position
+	/// </summary>
+	/// <param name="i">Row index</param>
+	/// <param name="j">Column index</param>
+	/// <returns>Value at the specified position</returns>
+	double get(int i, int j) const;
+
+	/// <summary>
+	/// Prints the matrix to the standard output
+	/// </summary>
+	void print();
+
+	/// <summary>
+	/// Returns a string representation of the matrix
+	/// </summary>
+	/// <returns>Matrix formatted string</returns>
+	std::stringstream to_string();
+
+
+	/// <summary>
+	/// Copy-assignment operator. 
 	/// Safe on self-assignment, and to return the lhs by reference
 	/// </summary>
 	/// <param name="m"></param>
@@ -54,9 +120,20 @@ public:
 	/// <returns></returns>
 	mx& operator=(mx&& m) noexcept;
 
-
+	/// <summary>
+	/// Get the value reference at the specified position.
+	/// Useful for beatiful assignment operations.
+	/// </summary>
+	/// <example>
+	/// Assign a value to the element at position (1, 2)
+	/// <code>
+	/// m(1, 2) = 10;
+	/// </code>
+	/// </example>
+	/// <param name="i">Row index</param>
+	/// <param name="j">Columnd index</param>
+	/// <returns>Element (i,j) reference</returns>
 	double& operator()(int i, int j);
-
 
 	vx operator()(int i, Direction_t dir);
 
