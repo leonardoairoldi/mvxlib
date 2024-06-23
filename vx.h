@@ -66,6 +66,8 @@ public:
 
 	static vx log(const vx& m);	
 
+	static vx from_csv(std::string filename);
+
 private:
 
 	// Hide generic matrix metods for vectors

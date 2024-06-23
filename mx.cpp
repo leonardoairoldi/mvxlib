@@ -1,6 +1,7 @@
 #include "mx.h"
 
 #include <iostream>
+#include <fstream>
 #include <cassert>
 #include <algorithm>
 #include <vector>
@@ -54,6 +55,21 @@ mx::mx(int r, int c, std::initializer_list<double> list)
 }
 
 mx::mx(std::initializer_list<std::initializer_list<double>> list)
+{
+	r = list.size();
+	c = list.begin()->size();
+	data = new double[r * c];
+	int i = 0;
+	for (auto it = list.begin(); it != list.end() && i < (r * c); ++it)
+	{
+		if (it->size() != c) throw std::length_error("Initializer list dimensions do not match");
+		for (auto it2 = it->begin(); it2 != it->end() && i < (r * c); ++it2)
+			data[i++] = *it2;
+	}
+
+}
+
+mx::mx(std::vector<std::vector<double>> list)
 {
 	r = list.size();
 	c = list.begin()->size();
@@ -369,6 +385,43 @@ void mx::print_size() const {
 int mx::size(Direction_t dir) const
 {
 	return dir == ROW ? r : c;
+}
+
+void mx::to_csv(std::string filename) const
+{
+	std::ofstream file(filename);
+	if (!file.is_open())
+		throw std::runtime_error("Could not open file");
+
+	for (int i = 0; i < r; ++i) {
+		for(int j = 0; j < c; ++j)
+			file << data[i * c + j] << ",";
+		file << std::endl;
+	}
+	file.close();
+}
+
+mx mx::from_csv(std::string filename)
+{
+	std::ifstream file(filename);
+	if (!file.is_open())
+		throw std::runtime_error("Could not open file");
+
+	std::vector<std::vector<double>> temp;
+	std::string line;
+	while (std::getline(file, line))
+	{
+		std::vector<double> row;
+		std::stringstream ss(line);
+		std::string cell;
+		while (std::getline(ss, cell, ','))
+			row.push_back(std::stod(cell));
+		temp.push_back(row);
+	}
+	file.close();
+
+
+	return mx(temp);
 }
 
 // ROW returns a column vector and vice versa

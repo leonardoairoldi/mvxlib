@@ -37,6 +37,10 @@ void Example() {
 
 	vx csd = 2.0 - cs;
 	csd.print();
+	csd.to_csv("csd.csv");
+
+	vx m1 = vx::from_csv("csd.csv");
+	m1.print();
 }
 
 int main()

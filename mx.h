@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <tuple>
+#include <vector>
 
 #define ALL -1
 
@@ -67,6 +68,8 @@ public:
 	/// </summary>
 	/// <param name="list">A list of row values</param>
 	mx(std::initializer_list<std::initializer_list<double>> list);
+
+	mx(std::vector<std::vector<double>> list);
 
 	/// Destructor
 	/// <summary>
@@ -175,9 +178,11 @@ public:
 
 	double sum() const noexcept;
 
+
 	void print_size() const;
 	int size(Direction_t dir) const;
-
+	void to_csv(std::string filename) const;
+	static mx from_csv(std::string filename);
 
 	friend std::ostream& operator<<(std::ostream& os, mx& m);
 	friend std::istream& operator>>(std::istream& is, mx& m);

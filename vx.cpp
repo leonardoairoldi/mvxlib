@@ -184,3 +184,17 @@ double& vx::operator()(int i) const
 vx vx::log(const vx& m) {
 	return (vx&)mx::log((mx&)m);
 }
+
+vx vx::from_csv(std::string filename) {
+	mx m = mx::from_csv(filename);
+	vx v;
+	try
+	{
+		v = vx(m);
+	}
+	catch (const std::length_error&)
+	{
+		throw std::invalid_argument("Imported matrix is not a vector");
+	}
+	return v;
+}
