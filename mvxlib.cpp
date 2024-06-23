@@ -41,6 +41,20 @@ void Example() {
 
 	vx m1 = vx::from_csv("csd.csv");
 	m1.print();
+	clrscr();
+
+	mx af({ {1, 2, 3}, {4, 5, 6} });
+	mx bf({ {1, 2, 3}, {7, 5, 8} });
+	
+	af.append_to_csv("a.csv", ";");
+	bf.append_to_csv("a.csv", ";");	
+
+	std::list<mx> mlist = mx::from_csv("a.csv", ";");
+
+	std::cout << "List size: " << mlist.size() << std::endl;
+	
+	auto it = mlist.begin();
+	(*it).print();
 }
 
 int main()

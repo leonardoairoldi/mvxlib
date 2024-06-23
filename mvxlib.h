@@ -5,6 +5,9 @@
 
 #include <iostream>
 
+
+#define clrscr() {uint8_t i = 0; while(++i) printf("\n"); }
+
 // TODO: Reference additional headers your program requires here.
 #include "mx.h"
 #include "vx.h"

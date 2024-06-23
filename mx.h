@@ -4,6 +4,7 @@
 #include <iostream>
 #include <tuple>
 #include <vector>
+#include <list>
 
 #define ALL -1
 
@@ -182,7 +183,12 @@ public:
 	void print_size() const;
 	int size(Direction_t dir) const;
 	void to_csv(std::string filename) const;
+	// Do not use to_csv and then append_to_csv, as a matrix separator is needed
+	void append_to_csv(std::string filename, std::string matrix_separator) const;
+	
 	static mx from_csv(std::string filename);
+	static std::list<mx> from_csv(std::string filename, std::string multiple_matrix_separator);
+
 
 	friend std::ostream& operator<<(std::ostream& os, mx& m);
 	friend std::istream& operator>>(std::istream& is, mx& m);

@@ -401,6 +401,23 @@ void mx::to_csv(std::string filename) const
 	file.close();
 }
 
+void mx::append_to_csv(std::string filename, std::string matrix_separator) const
+{
+	// Open file in append mode
+	std::ofstream file(filename, std::ios::app);
+	if (!file.is_open())
+		throw std::runtime_error("Could not open file");
+
+
+	for (int i = 0; i < r; ++i) {
+		for (int j = 0; j < c; ++j)
+			file << data[i * c + j] << ",";
+		file << std::endl;
+	}
+	file << matrix_separator << std::endl;
+	file.close();
+}
+
 mx mx::from_csv(std::string filename)
 {
 	std::ifstream file(filename);
@@ -422,6 +439,37 @@ mx mx::from_csv(std::string filename)
 
 
 	return mx(temp);
+}
+
+std::list<mx> mx::from_csv(std::string filename, std::string multiple_matrix_separator)
+{
+	std::ifstream file(filename);
+	if (!file.is_open())
+		throw std::runtime_error("Could not open file");
+
+	// Different matrices are separated by a # symbol
+	std::list<mx> temp;
+	std::vector<std::vector<double>> current;
+	std::string line;
+	while (std::getline(file, line))
+	{
+		if (line.find(multiple_matrix_separator) != std::string::npos) // to avoid problems with \n or blank spaces
+		{
+			temp.push_back(mx(current));
+			current.clear();
+		}
+		else
+		{
+			std::vector<double> row;
+			std::stringstream ss(line);
+			std::string cell;
+			while (std::getline(ss, cell, ','))
+				row.push_back(std::stod(cell));
+			current.push_back(row);
+		}
+	}
+
+	return temp;
 }
 
 // ROW returns a column vector and vice versa
